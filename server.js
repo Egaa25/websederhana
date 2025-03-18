@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const path = require("path");
 
 const app = express();
-const PORT = 3000;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +25,12 @@ app.post("/submit", (req, res) => {
   res.redirect("/"); // Redirect ke halaman utama setelah submit
 });
 
-// Jalankan server
-app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
-});
+// Start Server - listen on all interfaces
+const PORT = process.env.PORT || 3000;
+app
+  .listen(PORT, "0.0.0.0", () => {
+    console.log("Server running on port ${PORT}");
+  })
+  .on("error", (err) => {
+    console.error("Failed to start server:", err);
+  });
